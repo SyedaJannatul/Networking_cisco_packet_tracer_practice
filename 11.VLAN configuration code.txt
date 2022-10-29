@@ -1,0 +1,79 @@
+id_of_the_LAN=any number but unique in both LAN
+name_of_the_LAN=any name but unique in both LAN
+interface_id=port no.
+"Similar LAN must have same network ip"
+---------------------
+en
+conf t
+
+vlan id_of_the_LAN
+name name_of_the_LAN
+exit
+int interface_id
+switchport access vlan id_of_the_LAN
+exit
+int interface_id
+switchport mode trunk
+exit
+interface range f0/1-4
+switchport mode access
+exit
+----------------------
+switch1 configuration
+----------------------
+en
+conf t
+vlan 10
+name IT
+exit
+vlan 20
+name Management
+exit
+int fa0/1
+switchport access vlan 10
+exit
+int fa0/2
+switchport access vlan 10
+exit
+int fa0/3
+switchport access vlan 20
+exit
+int fa0/4
+switchport access vlan 20
+exit
+int fa0/5
+switchport mode trunk
+exit
+interface range f0/1-4
+switchport mode access
+exit
+
+----------------------
+switch2 configuration
+----------------------
+en
+conf t
+vlan 10
+name IT
+exit
+vlan 20
+name Management
+exit
+int fa0/1
+switchport access vlan 10
+exit
+int fa0/2
+switchport access vlan 10
+exit
+int fa0/3
+switchport access vlan 20
+exit
+int fa0/4
+switchport access vlan 20
+exit
+int fa0/5
+switchport mode trunk
+exit
+interface range f0/1-4
+switchport mode access
+exit

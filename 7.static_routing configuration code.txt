@@ -1,0 +1,29 @@
+FOR ROUTER1
+
+en
+conf t
+int fa1/0
+ip address 192.168.20.1 255.255.255.240
+no shut
+exit
+int fa0/0
+ip address 192.168.10.1 255.255.255.252
+no shut
+exit
+ip route 192.168.30.0 255.255.255.224 192.168.10.2
+exit
+
+FOR ROUTER2
+
+en
+conf t
+int fa1/0
+ip address 192.168.10.2 255.255.255.252
+no shut
+exit
+int fa0/0
+ip address 192.168.30.1 255.255.255.224
+no shut
+exit
+ip route 192.168.20.0 255.255.255.240 192.168.10.1
+exit

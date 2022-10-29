@@ -1,0 +1,28 @@
+en=enable
+conf t=configure terminal
+shut=shutdown
+exclude specific address = ip dhcp excluded-address specific_address
+exclude addresses within a range = ip dhcp excluded-address range_start_address range_last_address
+------------------------------
+en
+conf t
+int fa0/0
+
+ip address 192.168.10.1 255.255.255.0
+no shut
+exit
+
+ip dhcp pool meem
+network 192.168.10.0 255.255.255.0
+default-router 192.168.10.1
+dns-server 221.123.31.5
+exit
+
+ip dhcp excluded-address 192.168.10.1
+ip dhcp excluded-address 192.168.10.3 192.168.10.50
+exit
+
+-------------------------------------
+to show table of dhcp ip
+------------------------------------
+show ip dhcp binding

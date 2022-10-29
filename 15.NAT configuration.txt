@@ -1,0 +1,139 @@
+##static configuration
+
+ip nat inside source static tcp 192.168.10.2 100 10.10.10.1 100
+ip nat inside source static tcp 192.168.10.3 101 10.10.10.1 101
+do wr
+
+##EIGRP
+router eigrp id
+no auto-summary
+network network_ip-address
+do wr
+
+##to check in public network connection use command
+do ping interface_ip_of _router
+for example ,from router1
+do ping 11.11.11.1
+
+------------------------------
+Router 1 configuration
+------------------------------
+
+en 
+conf t
+int gig0/0
+ip address 13.13.13.1 255.255.255.0
+no shut
+exit
+int gig0/1
+ip address 192.168.10.1 255.255.255.0
+no shut
+exit
+int gig0/2
+ip address 192.168.20.1 255.255.255.0
+no shut
+exit
+en 
+conf t
+ip dhcp excluded-address 13.13.13.1 13.13.13.5
+ip dhcp excluded-address 192.168.10.200 192.168.10.255
+ip dhcp excluded-address 192.168.10.1 
+ip dhcp excluded-address 192.168.10.200 192.168.10.255
+ip dhcp excluded-address 192.168.20.1 
+ip dhcp excluded-address 192.168.20.200 192.168.20.255
+do wr
+en 
+conf t
+int gig0/1
+ip dhcp pool lan1
+network 192.168.10.0 255.255.255.0
+default-router 192.168.10.1
+dns-server 8.8.8.8
+exit
+en 
+conf t
+int gig0/2
+ip dhcp pool lan2
+network 192.168.20.0 255.255.255.0
+default-router 192.168.20.1
+dns-server 8.8.8.8
+exit
+conf t
+int gig0/0
+router eigrp 10
+no auto-summary
+network 13.13.13.0
+do wr
+exit
+en
+conf t
+int gig0/0
+ip nat outside
+exit
+int gig0/1
+ip nat inside
+exit
+int gig0/2
+ip nat inside
+exit
+do wr
+exit
+en 
+conf t
+ip access-list standard NAT
+permit 192.168.10.0 0.0.0.255
+permit 192.168.20.0 0.0.0.255
+exit
+ip nat inside source list NAT interface gig0/0 overload
+do wr
+exit
+------------------------------
+Router 2 configuration
+------------------------------
+
+en 
+conf t
+int gig0/0
+ip address 13.13.13.2 255.255.255.0
+no shut
+exit
+int gig0/1
+ip address 11.11.11.2 255.255.255.0
+no shut
+exit
+en 
+conf t
+int gig0/0
+router eigrp 10
+no auto-summary
+network 13.13.13.0
+do wr
+exit
+int gig0/1
+router eigrp 10
+no auto-summary
+network 11.11.11.0
+do wr
+exit
+------------------------------
+Router 3 configuration
+------------------------------
+
+en 
+conf t
+int gig0/0
+ip address 11.11.11.1 255.255.255.0
+no shut
+exit
+int gig0/1
+ip address 192.168.30.1 255.255.255.0
+no shut
+exit
+en 
+conf t
+int gig0/0
+router eigrp 10
+no auto-summary
+network 11.11.11.0
+do wr
+exit

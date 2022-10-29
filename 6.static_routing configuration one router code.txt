@@ -1,0 +1,28 @@
+en = enable
+conf = configure
+int = interface
+shut = shutdown
+next-hop_ip-address = the interface(port) ip of the destination router to which the packet can enter from the source router.
+-----------------------------
+click on router-> CLI->write no[continue with the configuraton dialogue]
+Router>write the following instruction
+-----------------------------
+en
+conf t
+int fa0/0
+ip address 192.168.10.1 255.255.255.248
+no shut
+exit
+int fa1/0
+ip address 192.168.20.1 255.255.255.248
+no shut
+exit
+
+-------------------------------------------------------------------------
+Static routing::no need this instruction for same router because next hop is same router.
+-------------------------------------------------------------------------
+ip route destination_network-ip-address destination_subnet-mask next-hop_ip-address
+exit
+----------------------------------------
+ip route 192.168.30.0 255.255.255.224 192.168.10.2
+exit

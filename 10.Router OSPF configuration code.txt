@@ -1,0 +1,75 @@
+id = can be any number but must be unique for each router,can not repeat.
+wildcard-mask = network subnet mask default highest - network subnet mask
+		for example, a network subnet mask is:255.255.255.248 but its default lowest subnet mask is :255.255.255.0 and highestest subnet mask is 				:255.255.255.255 as it belongs to class C. So wildcard mask=(255-255).(255-255).(255-255).(255-248)= 0.0.0.7
+---------------------------
+router ospf id 
+network network_ip-address wildcard-mask area 1
+----------------------------
+---------------------------
+en
+conf t
+-------------------------
+Router1 configuraton
+------------------------
+
+int gig0/0
+ip address 192.168.10.1 255.255.255.248
+no shut
+exit
+int gig0/1
+ip address 192.168.50.1 255.255.255.248
+no shut
+exit
+int gig0/2
+ip address 192.168.20.1 255.255.255.248
+no shut
+exit
+router ospf 1
+network 192.168.10.0 0.0.0.7 area 1
+network 192.168.20.0 0.0.0.7 area 1
+network 192.168.50.0 0.0.0.7 area 1
+exit
+
+-------------------------
+Router2 configuraton
+------------------------
+
+int gig0/0
+ip address 192.168.30.1 255.255.255.248
+no shut
+exit
+int gig0/1
+ip address 192.168.20.2 255.255.255.248
+no shut
+exit
+int gig0/2
+ip address 192.168.60.1 255.255.255.248
+no shut
+exit
+router ospf 2
+network 192.168.30.0 0.0.0.7 area 1
+network 192.168.20.0 0.0.0.7 area 1
+network 192.168.60.0 0.0.0.7 area 1
+exit
+
+-------------------------
+Router3 configuraton
+------------------------
+
+int gig0/0
+ip address 192.168.40.1 255.255.255.248
+no shut
+exit
+int gig0/1
+ip address 192.168.50.2 255.255.255.248
+no shut
+exit
+int gig0/2
+ip address 192.168.60.2 255.255.255.248
+no shut
+exit
+router ospf 3
+network 192.168.40.0 0.0.0.7 area 1
+network 192.168.50.0 0.0.0.7 area 1
+network 192.168.60.0 0.0.0.7 area 1
+exit
